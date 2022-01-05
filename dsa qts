@@ -1,0 +1,501 @@
+'''
+Write a python function which accepts two sorted stacks and returns a new stack containing all the elements of input stacks in sorted order.
+ 
+Note: The output stack should be of the size as that of the sum of the sizes of the input stacks.
+ 
+       Sample Input	                                       Expected Output
+Stack1 (top - bottom): 7,6,5
+Stack2 (top - bottom): 3,2,1	                Stack (top-bottom) : 7,6,5,3,2,1
+
+Stack1 (top - bottom): 15,10,3
+Stack2 (top - bottom): 21,9,7	                Stack (top-bottom) : 21,15,10,9,7,3
+
+'''
+
+'''class Stack:
+    def __init__(self,max_size):
+        self.__max_size=max_size
+        self.__elements=[None]*self.__max_size
+        self.__top=-1
+
+    def get_max_size(self):
+        return self.__max_size
+
+    def full(self):
+        if(self.__top==self.__max_size-1):
+            return True
+        return False
+
+    def push(self,data):
+        if (self.full()):
+            print("overflow")
+        else:
+            self.__top+=1
+            self.__elements[self.__top]=data
+
+    def empty(self):
+        if(self.__top==-1):
+            return True
+        return False
+
+    def pop(self):
+        if(self.empty()):
+            print("underflow")
+        else:
+            data=self.__elements[self.__top]
+            self.__top-=1
+            return data
+
+    def display(self):
+        if(self.empty()):
+            print("stack is empty")
+        else:
+            index=self.__top
+            while(index>=0):
+                print(self.__elements[index])
+                index-=1
+
+def merge_stack(stack1,stack2):
+    l=[]
+    stack3=Stack(stack1.get_max_size()+stack2.get_max_size())
+    while(not stack1.empty()):
+        l.append(stack1.pop())
+    while(not stack2.empty()):
+        l.append(stack2.pop())
+    l.sort()
+    for element in l:
+        stack3.push(element)
+    return stack3
+
+stack1=Stack(3)
+stack1.push(4)
+stack1.push(6)
+stack1.push(7)
+
+stack2=Stack(4)
+stack2.push(40)
+stack2.push(43)
+stack2.push(53)
+stack2.push(60)
+
+print("stack 1: ")
+stack1.display()
+
+print("stack 2: ")
+stack2.display()
+
+output_stack=merge_stack(stack1,stack2)
+print("stack 3:")
+output_stack.display()
+
+
+
+
+'''
+Given a stack of boxes in different colors. 
+Write a python function that accepts the stack of boxes 
+and removes those boxes having color other than the primary colors (Red, Green and Blue) from the stack. 
+The removed boxes should be en-queued into a new queue and returned. 
+The original stack should have only the boxes having primary colors and the order must be maintained.
+ 
+Perform case sensitive string comparison wherever necessary.
+ 
+Note: Consider the queue to be of the same size as that of the original stack
+
+'''
+
+class Stack:
+    def __init__(self,max_size):
+        self.__max_size=max_size
+        self.__elements=[None]*self.__max_size
+        self.__top=-1
+
+    def get_max_size(self):
+        return self.__max_size
+
+    def full(self):
+        if(self.__top==self.__max_size-1):
+            return True
+        return False
+
+    def push(self,data):
+        if (self.full()):
+            print("overflow")
+        else:
+            self.__top+=1
+            self.__elements[self.__top]=data
+
+    def empty(self):
+        if(self.__top==-1):
+            return True
+        return False
+
+    def pop(self):
+        if(self.empty()):
+            print("underflow")
+        else:
+            data=self.__elements[self.__top]
+            self.__top-=1
+            return data
+
+    def display(self):
+        if(self.empty()):
+            print("stack is empty")
+        else:
+            index=self.__top
+            while(index>=0):
+                print(self.__elements[index])
+                index-=1
+
+class Queue:
+    def __init__(self,max_size):
+        self.__max_size=max_size
+        self.__elements=[None]*self.__max_size
+        self.__rear=-1
+        self.__front=0
+
+    def get_max_size(self):
+        return self.__max_size
+
+    def full(self):
+        if(self.__rear==self.__max_size-1):
+            return True
+        return False
+
+    def enqueue(self,data):
+        if (self.full()):
+            print("overflow")
+        else:
+            self.__rear+=1
+            self.__elements[self.__rear]=data
+
+    def empty(self):
+        if (self.__front>self.__rear):
+            return True
+        return False
+
+    def dequeue(self):
+        if(self.empty()):
+            print("underflow")
+        else:
+             data=self.__elements[self.__front]
+             self.__front+=1
+             return data
+
+    def display(self):
+        for index in range(self.__front,self.__rear+1):
+            print(self.__elements[index])
+
+def separate_boxes(box_stack):
+    box_color=['Red','Green','Blue']
+    stack=Stack(8)
+    queue=Queue(8)
+    while(not box_stack.empty()):
+        color=box_stack.pop()
+        if color in box_color:
+            stack.push(color)
+        elif color not in box_color:
+            queue.enqueue(color)
+    while(not stack.empty()):
+        box_stack.push(stack.pop())
+    return queue
+
+box_stack=Stack(8)
+box_stack.push("Red")    
+box_stack.push("Magenta")
+box_stack.push("Yellow")
+box_stack.push("Red")
+box_stack.push("Orange")
+box_stack.push("Green")
+box_stack.push("White")
+box_stack.push("Purple")
+
+box_stack.display()
+result=separate_boxes(box_stack)
+print("boxes in stack: ")
+box_stack.display()
+
+print("boxes in queue: ")
+result.display()
+
+
+
+"""
+Write a python program to remove all duplicate elements from a sorted linked list containing integer data.
+Use the LinkedList class and methods in it to implement the above program.
+
+Example: 
+Input LinkedList: 10 10 20 20 30 30 30 40 50
+Output LinkedList: 10 20 30 40 50
+
+"""
+
+class Node:
+    def __init__(self,data):
+        self.__data=data
+        self.__next=None
+
+    def get_data(self):
+        return self.__data
+
+    def set_data(self,data):
+        self.__data=data
+
+    def get_next(self):
+        return self.__next
+
+    def set_next(self,next_node):
+        self.__next=next_node
+
+
+class LinkedList:
+    def __init__(self):
+        self.__head=None
+        self.__tail=None
+
+    def get_head(self):
+        return self.__head
+
+    def get_tail(self):
+        return self.__tail
+
+    def add(self,data):
+        new_node=Node(data)
+        if(self.__head is None):
+            self.__head=self.__tail=new_node
+        else:
+            self.__tail.set_next(new_node)
+            self.__tail=new_node
+
+    def insert(self,data,data_before):
+        new_node=Node(data)
+        if(data_before==None):
+            new_node.set_next(self.__head)
+            self.__head=new_node
+            if(new_node.get_next()==None):
+                self.__tail=new_node
+
+        else:
+            node_before=self.find_node(data_before)
+            if(node_before is not None):
+                new_node.set_next(node_before.get_next())
+                node_before.set_next(new_node)
+                if(new_node.get_next() is None):
+                    self.__tail=new_node
+            else:
+                print(data_before,"is not present in the Linked list")
+
+    def display(self):
+        temp=self.__head
+        while(temp is not None):
+            print(temp.get_data())
+            temp=temp.get_next()
+
+    def find_node(self,data):
+        temp=self.__head
+        while(temp is not None):
+            if(temp.get_data()==data):
+                return temp
+            temp=temp.get_next()
+        return None
+
+    def delete(self,data):
+        node=self.find_node(data)
+        if(node is not None):
+            if(node==self.__head):
+                if(self.__head==self.__tail):
+                    self.__tail=None
+                self.__head=node.get_next()
+            else:
+                temp=self.__head
+                while(temp is not None):
+                    if(temp.get_next()==node):
+                        temp.set_next(node.get_next())
+                        if(node==self.__tail):
+                            self.__tail=temp
+                        node.set_next(None)
+                        break
+                    temp=temp.get_next()
+        else:
+            print(data,"is not present in Linked list")
+
+
+def remove_duplicates(duplicate_list):
+    temp=duplicate_list.get_head()
+    while(temp.get_next()):
+        if temp.get_data()==temp.get_next().get_data():
+            temp1=temp
+            temp=temp.get_next()
+            print("Removed: "+str(temp1.get_data()))
+            duplicate_list.delete(temp1.get_data())
+            continue
+        temp=temp.get_next()
+    duplicate_list.display()
+    return duplicate_list
+
+duplicate_list=LinkedList()
+duplicate_list.add(10)
+duplicate_list.add(10)
+duplicate_list.add(20)
+duplicate_list.add(20)
+duplicate_list.add(30)
+duplicate_list.add(30)
+duplicate_list.add(30)
+duplicate_list.add(40)
+duplicate_list.add(50)
+
+remove_duplicates(duplicate_list)
+
+
+
+'''
+Given a linked list of characters. Write a python function to return a new string that is created by 
+appending all the characters given in the linked list as per the rules given below.
+
+Rules:
+1. Replace '*' or '/' by a single space
+2. In case of two consecutive occurrences of '*' or '/' , 
+replace those two occurrences by a single space and convert the next character to upper case.
+
+Assume that 
+1. There will not be more than two consecutive occurrences of '*' or '/'
+2. The linked list will always end with an alphabet
+
+Sample Input	                                                                      Expected Output
+ 
+ A,n,*,/,a,p,p,l,e,*,a,/,day,*,*,k,e,e,p,s,/,*,a,/,/,d,o,c,t,o,r,*,A,w,a,y	         An Apple a day Keeps A Doctor Away
+
+'''
+
+
+class Node:
+    def __init__(self,data):
+        self.__data=data
+        self.__next=None
+
+    def get_data(self):
+        return self.__data
+
+    def set_data(self,data):
+        self.__data=data
+
+    def get_next(self):
+        return self.__next
+
+    def set_next(self,next_node):
+        self.__next=next_node
+
+class LinkedList:
+    def __init__(self):
+        self.__head=None
+        self.__tail=None
+
+    def get_head(self):
+        return self.__head
+
+    def get_tail(self):
+        return self.__tail
+
+    def add(self,data):
+        new_node=Node(data)
+        if(self.__head is None):
+            self.__head=self.__tail=new_node
+        else:
+            self.__tail.set_next(new_node)
+            self.__tail=new_node
+
+    def insert(self,data,data_before):
+        new_node=Node(data)
+        if(data_before==None):
+            new_node.set_next(self.__head)
+            self.__head=new_node
+            if(new_node.get_next()==None):
+                self.__tail=new_node
+
+        else:
+            node_before=self.find_node(data_before)
+            if(node_before is not None):
+                new_node.set_next(node_before.get_next())
+                node_before.set_next(new_node)
+                if(new_node.get_next() is None):
+                    self.__tail=new_node
+            else:
+                print(data_before,"is not present in the Linked list")
+
+    def display(self):
+        temp=self.__head
+        while(temp is not None):
+            print(temp.get_data())
+            temp=temp.get_next()
+
+    def find_node(self,data):
+        temp=self.__head
+        while(temp is not None):
+            if(temp.get_data()==data):
+                return temp
+            temp=temp.get_next()
+        return None
+
+    def delete(self,data):
+        node=self.find_node(data)
+        if(node is not None):
+            if(node==self.__head):
+                if(self.__head==self.__tail):
+                    self.__tail=None
+                self.__head=node.get_next()
+            else:
+                temp=self.__head
+                while(temp is not None):
+                    if(temp.get_next()==node):
+                        temp.set_next(node.get_next())
+                        if(node==self.__tail):
+                            self.__tail=temp
+                        node.set_next(None)
+                        break
+                    temp=temp.get_next()
+        else:
+            print(data,"is not present in Linked list")
+
+def create_new_sentence(word_list):
+    new_sentence=""
+    count=0
+    temp = word_list.get_head()
+    status=0
+    while(temp):
+        ch=temp.get_data()
+        if ch=="/" or ch=="*":
+            new_sentence+= " "
+            if temp.get_next().get_data()=="/" or temp.get_next().get_data()=="*":
+                status=1
+                temp=temp.get_next()
+            temp=temp.get_next()
+            continue
+        if status == 1:
+            ch=ch.upper()
+            status=0
+        new_sentence+=ch
+        temp=temp.get_next()
+    return new_sentence
+
+word_list=LinkedList()
+word_list.add("T")
+word_list.add("h")
+word_list.add("e")
+word_list.add("/")
+word_list.add("*")
+word_list.add("s")
+word_list.add("k")
+word_list.add("y")
+word_list.add("*")
+word_list.add("i")
+word_list.add("s")
+word_list.add("/")
+word_list.add("/")
+word_list.add("b")
+word_list.add("l")
+word_list.add("u")
+word_list.add("e")
+result=create_new_sentence(word_list)
+print(result)
+
+
