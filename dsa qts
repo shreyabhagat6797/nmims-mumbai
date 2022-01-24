@@ -871,3 +871,81 @@ def balanced(lst):
 lst=[1, 2, 4, 6, 3, 1]
 balanced(lst)
 
+
+
+'''
+Alice, a school teacher, has decided to take her 20 students to an exhibition. She got the tickets a week before (T1 to T20) and 
+she was informed that students will be allowed only in groups of 10 inside the exhibition hall.
+On the day of exhibition, few students did not turn up. 
+So the teacher followed the below strategy to identify the first 10 students who were sent as group-1. 
+
+Suppose the ticket id of the students who turned up on that day is as follows:
+T20, T5, T10, T1, T2, T8, T16, T17, T9, T4, T12, T13, T18
+She made the students stand in a line in increasing order of their ticket numbers. 
+They were asked to leave a vacant position, in case a student has not turned up.   
+Ex: T1, T2, V, T4, T5, V, V, T8, T9, T10, V, T12, T13, V, V, T16, T17, T18, V, T20 where V - indicates vacant position.
+
+Grouped them into 2 groups of 10 each including vacant positions.
+Ex: Group – 1 (T1, T2, V, T4, T5, V, V, T8, T9, T10), Group – 2 (V, T12, T13, V, V, T16, T17, T18, V, T20)
+Filled the vacant positions with the students from the next group as shown in the example below.
+Ex: Group – 1 (T1, T2, T12, T4, T5, T13, T16, T8, T9, T10) Group -2 (T17, T18, T20)
+Write a python function which accepts the unsorted ticket id list and 
+returns the list of ticket ids of the ten students who were finally sent inside as part of Group-1.
+ 
+Sample Input	                                                    Expected Output
+['T20','T5','T10','T1','T2','T8','T16','T17',
+'T9','T4','T12','T13', 'T18']	                        ['T1', 'T2', 'T12', 'T4', 'T5', 'T13', 'T16', 'T8', 'T9', 'T10']
+
+'''
+
+def arrange_tickets(ticket_list):
+    new_list=[]
+    for i in range(1,21): 
+        if "T"+str(i) in ticket_list:
+            new_list.append("T"+str(i))
+        else:
+            if i<=10:
+                new_list.append("V")
+    print(new_list)
+    counter=10
+    for index,ticket in enumerate(new_list):
+        if ticket=="V" and index<=10:
+            new_list[index]=new_list[counter]
+            counter+=1
+    return new_list[:10]
+
+ticket_list=['T20','T5','T10','T1','T2','T8','T16','T17','T9','T4','T12','T13', 'T18']	
+
+print("ticket ids of all the present students:")
+print(ticket_list)
+
+group1=arrange_tickets(ticket_list)
+print()
+print("group 1 ids:")
+print(group1)
+
+
+'''
+Given a list of numbers sorted in ascending order. Write a python function which searches for a given number in the list. 
+The given number may occur more than once in the list. 
+The function should return the index position at which the last occurrence of the given element is found. 
+If the number is not found, return -1.
+'''
+
+def last_instance(num_list,key):
+    count=0
+    index=0
+    if key in num_list:
+        index=num_list.index(key)
+    if index:
+        count=num_list.count(key)
+    return index+count-1
+
+num_list=[1,1,2,2,3,4,5,5,5,5]
+key=7
+result=last_instance(num_list,key)
+
+if(result!=-1):
+    print("the index is ",result)
+else:
+    print("number not found")
