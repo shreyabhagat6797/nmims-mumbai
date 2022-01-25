@@ -949,3 +949,86 @@ if(result!=-1):
     print("the index is ",result)
 else:
     print("number not found")
+
+
+
+
+
+'''
+Mary is a kindergarten teacher. She has given a task to the children after teaching them a list of words. 
+The task is to find the unknown words (other than the words they already know) from the given text. 
+Write a python function which accepts the text and the known list of words and returns the set of unknown words found.
+
+Return -1 if there are no unknown words.
+
+Sample Input                                            Expected Output
+
+Text: "the sun rises in the east"
+Vocabulary: ["sun","in","east","doctor","day"]          {'rises', 'the'}
+'''
+
+def find_unknown(text,vocabulary):
+    l=[]
+    status=0
+    text_list=text.split(" ")
+    for each_text in text_list:
+        if each_text not in vocabulary:
+            if "." in each_text:
+                each_text=each_text.replace("."," ")
+            l.append(each_text)
+            status=1
+    if status:
+        return set(l)
+    else:
+        return -1
+
+text= "the sun rises in the east"
+vocabulary= ["sun","in","east","doctor","day"]  
+unknown=find_unknown(text,vocabulary)
+print(unknown)
+
+
+'''
+Given an integer between 0 and 26, make a variable (self.answer). 
+That variable would be assigned to a string in this format:
+"nines:your answer, threes:your answer, ones:your answer"
+You need to find out how many ones, threes, and nines 
+it would at least take for the number of each to add up to the given integer when multiplied by one, three or nine (depends).
+
+Examples
+ones_threes_nines(10) ➞ "nines:1, threes:0, ones:1"
+
+ones_threes_nines(15) ➞ "nines:1, threes:2, ones:0"
+
+ones_threes_nines(22) ➞ "nines:2, threes:1, ones:1"
+Notes
+•	Each of the ones, threes or nines could only be either 0, 1 or 2.
+•	You must use a class.
+•	After the comma, you must put a space.
+
+'''
+
+class Ones_three_nine:
+    def __init__(self,n):
+        self.answer='nines:{} threes:{} ones:{}'.format(n//9,(n%9)//3,n%3)
+
+o=Ones_three_nine(10)
+print(o.answer)
+
+'''
+Given the participants' score sheet for your University Sports Day, 
+you are required to find the runner-up score. You are given scores. 
+Store them in a list and find the score of the runner-up.
+
+Sample Input 
+5
+2 3 6 6 5
+
+Sample Output 
+5
+
+'''
+
+n=int(input())
+scores=map(int,input().split())
+print(sorted(list(set(scores)))[-2])
