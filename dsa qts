@@ -1032,3 +1032,162 @@ Sample Output
 n=int(input())
 scores=map(int,input().split())
 print(sorted(list(set(scores)))[-2])
+
+
+'''
+"WonderLand" water theme park wants to generate tickets for its customers.
+Complete the implementation of the requirement based on the given class diagram and code.
+       
+Class Description:
+Theme Park class: Complete the class based on comments given in starter code
+Ticket class: Complete the class based on comments given in starter code
+Customer class:
+
+Initialize points_earned, food_coupon and ticket to 0, "No" and a Ticket object respectively in the constructor
+
+play_game():
+Calculate total points based on the list of games played by the customer
+Update attribute, points_earned with the calculated value
+ThemePark allows a free ride on Game 2 if the customer has opted for Game 3. 
+If this is satisfied, add "Game2" to list_of_games and include its points to total points
+
+update_food_coupon(): They provide food coupon to a customer who has opted Game 4 and has earned more than 15 points.
+Update attribute, food_coupon status to "Yes" if the above rule is satisfied
+
+book_ticket():
+Calculate ticket amount
+If amount can be calculated, generate ticket id, play game, update food coupon and return true
+Else, return false
+Note: Perform case sensitive string comparison
+'''
+
+
+class ThemePark:
+    #dict_of_games contains the game name as key, price/ride and points that can be earned by customer in a list as value
+    dict_of_games={"Game1":[35.5,5], "Game2":[40.0,6],"Game3":[120.0,10], "Game4":[60.0,7],"Game5":[25.0,4]}
+
+    @staticmethod
+    def validate_game(game_input):
+        if game_input.title() in ThemePark.dict_of_games.keys():
+            return True
+        else:
+            False
+    
+    @staticmethod
+    def get_points(game_input):
+        for game,points in ThemePark.dict_of_games.items():
+            if game_input.title()==game:
+                return points[1]
+    @staticmethod
+    def get_amount(game_input):
+        for game,points in ThemePark.dict_of_games.items():
+            if game_input.title()==game:
+                return points[0]
+
+class Ticket:
+    __ticket_count=200
+    def __init__(self):
+        self.__ticket_id=None
+        self.__ticket_amount=0
+
+    def generate_ticket_id(self):
+        self.__ticket_id=Ticket.__ticket_count+1
+        Ticket.__ticket_count+=1
+
+    def calculate_amount(self, list_of_games):
+        for game in list_of_games:
+            if ThemePark.validate_game(game):
+                self.__ticket_amount+=ThemePark.get_amount(game)
+            else:
+                self.__ticket_amount=0
+                return False
+        return True
+
+    def get_ticket_id(self):
+        return self.__ticket_id
+
+    def get_ticket_amount(self):
+        return self.__ticket_amount
+
+class Customer:
+    def __init__(self,name,list_of_games):
+        self.__name=name
+        self.__list_of_games=list_of_games
+        self.__ticket=Ticket()
+        self.__points_earned=0
+        self.__food_coupon="No"
+               
+    def play_game(self):
+        for game in self.__list_of_games:
+            self.__points_earned+=ThemePark.get_points(game)
+            if game=="Game3":
+                self.__list_of_games.append("Game2")
+                
+    def update_food_coupon(self):
+        if "Game4" in self.__list_of_games and self.__points_earned>15:
+            self.__food_coupon="Yes"
+
+    def book_ticket(self):
+        if Ticket.calculate_amount(self.__ticket,self.__list_of_games):
+            Ticket.generate_ticket_id(self.__ticket)
+            self.play_game()
+            self.update_food_coupon()
+            return True
+        else:
+            return False
+
+    def get_name(self):
+        return self.__name
+
+    def get_list_of_games(self):
+        return self.__list_of_games
+
+    def get_ticket(self):
+        return self.__ticket
+
+    def get_food_coupon(self):
+        return self.__food_coupon
+
+    def get_points_earned(self):
+        return self.__points_earned
+
+t=Ticket()
+c=Customer("ABC",["Game4","Game3","Game2"])
+
+print(t.calculate_amount(["Game4","Game3","Game2"]))
+print(t.get_ticket_amount())
+
+t.generate_ticket_id()
+print(t.get_ticket_id())
+
+c.play_game()
+c.update_food_coupon()
+print(c.get_points_earned())
+print(c.get_food_coupon())
+print(c.book_ticket())
+
+
+'''
+Create a function that takes two parameters and, if both parameters are strings, add them as
+	 if they were integers or if the two parameters are integers, concatenate them.
+	
+	Examples
+	stupid_addition(1, 2) ➞ "12"
+	
+	stupid_addition("1", "2") ➞ 3
+	
+	stupid_addition("1", 2) ➞ None
+	Notes
+	If the two parameters are different data types, return None.
+	All parameters will either be strings or integers.
+
+'''
+
+def myFunc(a, b):
+    if(type(a) is int and type(b) is int): 
+        return str(a)+str(b)
+    elif(type(a) is str and type(b) is str):
+        return int(a) + int(b)
+    return "None"
+    
+print(myFunc('1', 2))
